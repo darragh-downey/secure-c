@@ -8,17 +8,30 @@ import (
 )
 
 func TestParser(t *testing.T) {
-	source := "int main() { return 0; }"
-	l := lexer.NewLexer(source)
-	tokens := l.Tokenize()
-
-	p := parser.NewParser(tokens)
-	ast, err := p.Parse()
-	if err != nil {
-		t.Fatalf("Parse error: %v", err)
+	testCases := []struct {
+		name     string
+		secure   bool
+		filename string
+	}{
+		{name: "Insecure", secure: false, filename: "buffer_overflow.c"},
+		{name: "Basic", secure: true, filename: "basic.c"},
 	}
 
-	if ast == nil {
-		t.Fatal("Expected non-nil AST")
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			source := loadTestCase(t, tc.secure, tc.filename)
+			l := lexer.NewLexer(source)
+			tokens := l.Tokenize()
+
+			p := parser.NewParser(tokens)
+			ast, err := p.Parse()
+			if err != nil {
+				t.Fatalf("Parse error: %v", err)
+			}
+
+			if ast == nil {
+				t.Fatal("Expected non-nil AST")
+			}
+		})
 	}
 }
