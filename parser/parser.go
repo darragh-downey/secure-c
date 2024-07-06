@@ -2,7 +2,8 @@ package parser
 
 import (
 	"fmt"
-	"github.com/darragh-downey/secure_c/lexer"
+
+	"github.com/darragh-downey/secure-c/lexer"
 )
 
 type Parser struct {

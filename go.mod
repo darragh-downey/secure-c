@@ -1,3 +1,3 @@
-module github.com/darragh-downey/secure_c.git
+module github.com/darragh-downey/secure-c.git
 
 go 1.22.4
