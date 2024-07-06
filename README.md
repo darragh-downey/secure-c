@@ -6,6 +6,8 @@ The Secure C Compiler project aims to create a robust, secure C compiler that en
 
 Optimization is not the primary focus, safety and security are.
 
+[![Keynote: Safety and Security: The Future of C and C++ - Robert Seacord - NDC TechTown 2023](https://img.youtube.com/vi/DRgoEKrTxXY/0.jpg)](https://youtu.be/DRgoEKrTxXY?si=xxsCBgFzOB6nnQ7f)
+
 ## Project Structure
 
 ```sh
