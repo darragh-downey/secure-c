@@ -11,11 +11,6 @@ type Parser struct {
 	current int
 }
 
-type ASTNode struct {
-	Value    string
-	Children []*ASTNode
-}
-
 func NewParser(tokens []lexer.Token) *Parser {
 	return &Parser{tokens: tokens}
 }
