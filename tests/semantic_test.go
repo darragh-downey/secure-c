@@ -40,7 +40,8 @@ func TestSemanticAnalyzer(t *testing.T) {
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
 			source := loadTestCase(t, tc.secure, tc.filename)
-			l := lexer.NewLexer(source)
+			preprocessedSource := lexer.Preprocess(source)
+			l := lexer.NewLexer(preprocessedSource)
 			tokens := l.Tokenize()
 
 			p := parser.NewParser(tokens)

@@ -124,6 +124,13 @@ func (l *Lexer) scanToken() Token {
 	if c == '#' {
 		return l.preprocessor()
 	}
+	if c == '/' {
+		if l.match('/') {
+			return l.lineComment()
+		} else if l.match('*') {
+			return l.blockComment()
+		}
+	}
 	if strings.ContainsRune("(),;{}", c) {
 		return l.addToken(TOKEN_SEPARATOR)
 	}
@@ -152,6 +159,14 @@ func (l *Lexer) peek() rune {
 	}
 	r, _ := utf8.DecodeRuneInString(l.source[l.current:])
 	return r
+}
+
+func (l *Lexer) match(expected rune) bool {
+	if l.peek() == expected {
+		l.advance()
+		return true
+	}
+	return false
 }
 
 func (l *Lexer) identifier() Token {
@@ -204,4 +219,24 @@ func (l *Lexer) preprocessor() Token {
 		l.advance()
 	}
 	return l.addToken(TOKEN_PREPROCESSOR)
+}
+
+func (l *Lexer) lineComment() Token {
+	for l.peek() != '\n' && l.peek() != 0 {
+		l.advance()
+	}
+	return l.addToken(TOKEN_COMMENT)
+}
+
+func (l *Lexer) blockComment() Token {
+	for {
+		if l.peek() == '*' && l.match('/') {
+			break
+		}
+		if l.peek() == 0 {
+			break
+		}
+		l.advance()
+	}
+	return l.addToken(TOKEN_COMMENT)
 }

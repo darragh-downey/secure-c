@@ -13,6 +13,7 @@ const (
 	TOKEN_SEPARATOR    TokenType = "SEPARATOR"
 	TOKEN_PREPROCESSOR TokenType = "PREPROCESSOR"
 	TOKEN_INCLUDE      TokenType = "INCLUDE"
+	TOKEN_COMMENT      TokenType = "COMMENT"
 )
 
 type Token struct {

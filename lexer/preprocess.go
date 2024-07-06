@@ -10,7 +10,7 @@ func Preprocess(source string) string {
 
 	var preprocessedTokens []Token
 	for _, token := range tokens {
-		if token.Type != TOKEN_INCLUDE {
+		if token.Type != TOKEN_INCLUDE && token.Type != TOKEN_COMMENT {
 			preprocessedTokens = append(preprocessedTokens, token)
 		}
 	}
