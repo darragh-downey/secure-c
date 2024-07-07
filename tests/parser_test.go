@@ -11,27 +11,35 @@ func TestParser(t *testing.T) {
 	testCases := []struct {
 		name     string
 		secure   bool
+		caseID   string
 		filename string
+		expected string
 	}{
-		{name: "Insecure", secure: false, filename: "buffer_overflow.c"},
-		{name: "Basic", secure: true, filename: "basic.c"},
+		{
+			name:     "HelloWorld",
+			secure:   true,
+			filename: "hello_world.c",
+			caseID:   "case_01",
+			expected: "ast_hello_world.xml",
+		},
 	}
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			source := loadTestCase(t, tc.secure, tc.filename)
-			preprocessedSource := lexer.Preprocess(source)
-			l := lexer.NewLexer(preprocessedSource)
-			tokens := l.Tokenize()
+			source := loadTestCase(t, tc.secure, tc.caseID, tc.filename)
+			l := lexer.New(source)
+			tokens := l.IterateTokens()
 
 			p := parser.NewParser(tokens)
 			ast, err := p.Parse()
 			if err != nil {
-				t.Fatalf("Parse error: %v", err)
+				t.Fatalf("Parser error: %v", err)
 			}
 
-			if ast == nil {
-				t.Fatal("Expected non-nil AST")
+			// Compare the generated AST with the expected AST from the XML file
+			expectedAST := loadExpectedAST(t, tc.secure, tc.caseID, tc.expected)
+			if !compareAST(ast, expectedAST) {
+				t.Errorf("AST does not match expected AST")
 			}
 		})
 	}

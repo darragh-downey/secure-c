@@ -8,38 +8,38 @@ import (
 
 func TestLexer(t *testing.T) {
 	testCases := []struct {
-		name     string
-		secure   bool
-		filename string
+		name     string // name of the test case
+		secure   bool   // true if the test case is in the secure directory and false if it is in the insecure directory
+		caseID   string // directory name in secure/insecure directory
+		filename string // name of file in case_id directory
+		expected string // name of the XML file containing the expected parsed tokens
 	}{
-		{name: "BufferOverflow", secure: false, filename: "buffer_overflow.c"},
-		{name: "Basic", secure: true, filename: "basic.c"},
+		{
+			name:     "Hello World",
+			secure:   true,
+			filename: "hello_world.c",
+			caseID:   "case_01",
+			expected: "tokens.xml",
+		},
 	}
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			source := loadTestCase(t, tc.secure, tc.filename)
-			l := lexer.NewLexer(source)
-			tokens := l.Tokenize()
+			source := loadTestCase(t, tc.secure, tc.caseID, tc.filename)
+			expectedTokens := loadExpectedCase(t, tc.secure, tc.caseID, tc.expected).Tokens
 
-			if len(tokens) == 0 {
-				t.Fatalf("Expected tokens, got none")
+			l := lexer.New(source)
+			actualTokens := l.IterateTokens()
+
+			if len(actualTokens) != len(expectedTokens) {
+				t.Fatalf("Number of tokens mismatch: expected %d, got %d", len(expectedTokens), len(actualTokens))
 			}
 
-			expectedTypes := []lexer.TokenType{
-				lexer.TOKEN_PREPROCESSOR, lexer.TOKEN_PREPROCESSOR, lexer.TOKEN_PREPROCESSOR,
-				lexer.TOKEN_KEYWORD, lexer.TOKEN_IDENTIFIER, lexer.TOKEN_SEPARATOR, lexer.TOKEN_KEYWORD, lexer.TOKEN_IDENTIFIER, lexer.TOKEN_SEPARATOR,
-				lexer.TOKEN_KEYWORD, lexer.TOKEN_IDENTIFIER, lexer.TOKEN_SEPARATOR, lexer.TOKEN_OPERATOR,
-				lexer.TOKEN_IDENTIFIER, lexer.TOKEN_SEPARATOR, lexer.TOKEN_STRING, lexer.TOKEN_SEPARATOR,
-				lexer.TOKEN_KEYWORD, lexer.TOKEN_IDENTIFIER, lexer.TOKEN_SEPARATOR, lexer.TOKEN_OPERATOR,
-				lexer.TOKEN_IDENTIFIER, lexer.TOKEN_SEPARATOR, lexer.TOKEN_IDENTIFIER, lexer.TOKEN_OPERATOR,
-				lexer.TOKEN_STRING, lexer.TOKEN_SEPARATOR, lexer.TOKEN_SEPARATOR, lexer.TOKEN_SEPARATOR,
-				// Add more expected token types as needed
-			}
-
-			for i, token := range tokens {
-				if i < len(expectedTypes) && token.Type != expectedTypes[i] {
-					t.Errorf("Expected token type %v, got %v", expectedTypes[i], token.Type)
+			for i, actualToken := range actualTokens {
+				expectedToken := expectedTokens[i]
+				if actualToken.Type != lexer.TokenType(expectedToken.Type) || actualToken.Literal != expectedToken.Literal {
+					t.Errorf("Mismatch at token %d: expected (%s, %s), got (%s, %s)",
+						i, expectedToken.Type, expectedToken.Literal, actualToken.Type, actualToken.Literal)
 				}
 			}
 		})

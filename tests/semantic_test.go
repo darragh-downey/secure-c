@@ -13,12 +13,14 @@ func TestSemanticAnalyzer(t *testing.T) {
 	testCases := []struct {
 		name           string
 		secure         bool
+		caseID         string
 		filename       string
 		expectedErrors []string
 	}{
 		{
 			name:     "Insecure",
 			secure:   false,
+			caseID:   "case_01",
 			filename: "buffer_overflow.c",
 			expectedErrors: []string{
 				"unsafe function usage: gets",
@@ -39,10 +41,10 @@ func TestSemanticAnalyzer(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			source := loadTestCase(t, tc.secure, tc.filename)
-			preprocessedSource := lexer.Preprocess(source)
-			l := lexer.NewLexer(preprocessedSource)
-			tokens := l.Tokenize()
+			source := loadTestCase(t, tc.secure, tc.caseID, tc.filename)
+
+			l := lexer.New(source)
+			tokens := l.IterateTokens()
 
 			p := parser.NewParser(tokens)
 			ast, err := p.Parse()

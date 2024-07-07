@@ -1,242 +1,240 @@
 package lexer
 
 import (
-	"strings"
-	"unicode"
-	"unicode/utf8"
+	"fmt"
 )
 
+// Lexer represents a lexical scanner.
 type Lexer struct {
-	source   string
-	start    int
-	current  int
-	line     int
-	column   int
-	keywords map[string]TokenType
+	input        string
+	position     int  // current position in input (points to current char)
+	readPosition int  // current reading position in input (after current char)
+	ch           byte // current char under examination
+	line         int  // current line number
 }
 
-func NewLexer(source string) *Lexer {
-	return &Lexer{
-		source: source,
-		line:   1,
-		column: 1,
-		keywords: map[string]TokenType{
-			"auto":           TOKEN_KEYWORD,
-			"break":          TOKEN_KEYWORD,
-			"case":           TOKEN_KEYWORD,
-			"char":           TOKEN_KEYWORD,
-			"const":          TOKEN_KEYWORD,
-			"continue":       TOKEN_KEYWORD,
-			"default":        TOKEN_KEYWORD,
-			"do":             TOKEN_KEYWORD,
-			"double":         TOKEN_KEYWORD,
-			"else":           TOKEN_KEYWORD,
-			"enum":           TOKEN_KEYWORD,
-			"extern":         TOKEN_KEYWORD,
-			"float":          TOKEN_KEYWORD,
-			"for":            TOKEN_KEYWORD,
-			"goto":           TOKEN_KEYWORD,
-			"if":             TOKEN_KEYWORD,
-			"inline":         TOKEN_KEYWORD,
-			"int":            TOKEN_KEYWORD,
-			"long":           TOKEN_KEYWORD,
-			"register":       TOKEN_KEYWORD,
-			"restrict":       TOKEN_KEYWORD,
-			"return":         TOKEN_KEYWORD,
-			"short":          TOKEN_KEYWORD,
-			"signed":         TOKEN_KEYWORD,
-			"sizeof":         TOKEN_KEYWORD,
-			"static":         TOKEN_KEYWORD,
-			"struct":         TOKEN_KEYWORD,
-			"switch":         TOKEN_KEYWORD,
-			"typedef":        TOKEN_KEYWORD,
-			"union":          TOKEN_KEYWORD,
-			"unsigned":       TOKEN_KEYWORD,
-			"void":           TOKEN_KEYWORD,
-			"volatile":       TOKEN_KEYWORD,
-			"while":          TOKEN_KEYWORD,
-			"_Alignas":       TOKEN_KEYWORD,
-			"_Alignof":       TOKEN_KEYWORD,
-			"_Atomic":        TOKEN_KEYWORD,
-			"_Bool":          TOKEN_KEYWORD,
-			"_Complex":       TOKEN_KEYWORD,
-			"_Decimal128":    TOKEN_KEYWORD,
-			"_Decimal32":     TOKEN_KEYWORD,
-			"_Decimal64":     TOKEN_KEYWORD,
-			"_Generic":       TOKEN_KEYWORD,
-			"_Imaginary":     TOKEN_KEYWORD,
-			"_Noreturn":      TOKEN_KEYWORD,
-			"_Static_assert": TOKEN_KEYWORD,
-			"_Thread_local":  TOKEN_KEYWORD,
-		},
+// New creates a new instance of Lexer for the input string.
+func New(input string) *Lexer {
+	l := &Lexer{input: input, line: 1}
+	l.readChar()
+	return l
+}
+
+// readChar gives us the next character and advances our position in the input string.
+func (l *Lexer) readChar() {
+	if l.readPosition >= len(l.input) {
+		l.ch = 0
+	} else {
+		l.ch = l.input[l.readPosition]
 	}
-}
 
-func (l *Lexer) advance() rune {
-	if l.current >= len(l.source) {
-		return 0
+	if l.ch == '\n' {
+		l.line++
 	}
-	r, size := utf8.DecodeRuneInString(l.source[l.current:])
-	l.current += size
-	l.column++
-	return r
+
+	l.position = l.readPosition
+	l.readPosition++
 }
 
-func (l *Lexer) addToken(tType TokenType) Token {
-	text := l.source[l.start:l.current]
-	token := Token{Type: tType, Lexeme: text, Line: l.line, Column: l.column - (l.current - l.start)}
-	l.start = l.current
-	return token
-}
+// NextToken returns the next token from the input.
+func (l *Lexer) NextToken() Token {
+	var tok Token
 
-func (l *Lexer) Tokenize() []Token {
-	var tokens []Token
-	for {
-		tok := l.scanToken()
-		tokens = append(tokens, tok)
-		if tok.Type == TOKEN_EOF {
-			break
+	l.skipWhitespace()
+
+	switch l.ch {
+	case '#':
+		tok.Type = PREPROCESSOR
+		tok.Literal = l.readPreprocessorDirective()
+	case '=':
+		if l.peekChar() == '=' {
+			ch := l.ch
+			l.readChar()
+			tok = Token{Type: EQ, Literal: string(ch) + string(l.ch)}
+		} else {
+			tok = newToken(ASSIGN, l.ch, l.line)
+		}
+	case '!':
+		if l.peekChar() == '=' {
+			ch := l.ch
+			l.readChar()
+			tok = Token{Type: NOT_EQ, Literal: string(ch) + string(l.ch)}
+		} else {
+			tok = newToken(BANG, l.ch, l.line)
+		}
+	case '+':
+		if l.peekChar() == '+' {
+			ch := l.ch
+			l.readChar()
+			tok = Token{Type: INC, Literal: string(ch) + string(l.ch)}
+		} else if l.peekChar() == '=' {
+			ch := l.ch
+			l.readChar()
+			tok = Token{Type: PLUS_EQ, Literal: string(ch) + string(l.ch)}
+		} else {
+			tok = newToken(PLUS, l.ch, l.line)
+		}
+	case '-':
+		if l.peekChar() == '-' {
+			ch := l.ch
+			l.readChar()
+			tok = Token{Type: DEC, Literal: string(ch) + string(l.ch)}
+		} else if l.peekChar() == '=' {
+			ch := l.ch
+			l.readChar()
+			tok = Token{Type: MINUS_EQ, Literal: string(ch) + string(l.ch)}
+		} else {
+			tok = newToken(MINUS, l.ch, l.line)
+		}
+	case '/':
+		if l.peekChar() == '/' {
+			for l.ch != '\n' && l.ch != 0 {
+				l.readChar()
+			}
+		} else if l.peekChar() == '*' {
+			l.readChar()
+			l.readChar()
+			for !(l.ch == '*' && l.peekChar() == '/') {
+				l.readChar()
+			}
+			l.readChar()
+			l.readChar()
+		} else {
+			tok = newToken(SLASH, l.ch, l.line)
+		}
+	case '*':
+		tok = newToken(ASTERISK, l.ch, l.line)
+	case '<':
+		if l.peekChar() == '=' {
+			ch := l.ch
+			l.readChar()
+			tok = Token{Type: LE, Literal: string(ch) + string(l.ch)}
+		} else if l.peekChar() == '<' {
+			ch := l.ch
+			l.readChar()
+			tok = Token{Type: SHL, Literal: string(ch) + string(l.ch)}
+		} else {
+			tok = newToken(LT, l.ch, l.line)
+		}
+	case '>':
+		if l.peekChar() == '=' {
+			ch := l.ch
+			l.readChar()
+			tok = Token{Type: GE, Literal: string(ch) + string(l.ch)}
+		} else if l.peekChar() == '>' {
+			ch := l.ch
+			l.readChar()
+			tok = Token{Type: SHR, Literal: string(ch) + string(l.ch)}
+		} else {
+			tok = newToken(GT, l.ch, l.line)
+		}
+	case ';':
+		tok = newToken(SEMICOLON, l.ch, l.line)
+	case ',':
+		tok = newToken(COMMA, l.ch, l.line)
+	case '(':
+		tok = newToken(LPAREN, l.ch, l.line)
+	case ')':
+		tok = newToken(RPAREN, l.ch, l.line)
+	case '{':
+		tok = newToken(LBRACE, l.ch, l.line)
+	case '}':
+		tok = newToken(RBRACE, l.ch, l.line)
+	case '"':
+		tok.Type = STRING
+		tok.Literal = l.readString()
+	case 0:
+		tok.Literal = ""
+		tok.Type = EOF
+		tok.Line = l.line
+	default:
+		if isLetter(l.ch) {
+			tok.Literal = l.readIdentifier()
+			tok.Type = lookupIdent(tok.Literal)
+			tok.Line = l.line
+			return tok
+		} else if isDigit(l.ch) {
+			tok.Type = INT
+			tok.Literal = l.readNumber()
+			tok.Line = l.line
+			return tok
+		} else {
+			tok = newToken(ILLEGAL, l.ch, l.line)
+			fmt.Printf("Illegal character: %c on line %d\n", l.ch, l.line)
 		}
 	}
+
+	l.readChar()
+	return tok
+}
+
+// IterateTokens iterates over all tokens produced by the lexer
+func (l *Lexer) IterateTokens() []Token {
+	var tokens []Token
+	for tok := l.NextToken(); tok.Type != EOF; tok = l.NextToken() {
+		tokens = append(tokens, tok)
+	}
+	tokens = append(tokens, Token{Type: EOF, Literal: ""})
 	return tokens
 }
 
-func (l *Lexer) scanToken() Token {
-	l.skipWhitespace()
-	l.start = l.current
-	if l.current >= len(l.source) {
-		return l.addToken(TOKEN_EOF)
-	}
+func newToken(tokenType TokenType, ch byte, line int) Token {
+	return Token{Type: tokenType, Literal: string(ch), Line: line}
+}
 
-	c := l.advance()
-	if unicode.IsLetter(c) || c == '_' {
-		return l.identifier()
+func (l *Lexer) readIdentifier() string {
+	position := l.position
+	for isLetter(l.ch) {
+		l.readChar()
 	}
-	if unicode.IsDigit(c) {
-		return l.number()
+	return l.input[position:l.position]
+}
+
+func (l *Lexer) readNumber() string {
+	position := l.position
+	for isDigit(l.ch) {
+		l.readChar()
 	}
-	if strings.ContainsRune("+-*/=<>!&|", c) {
-		return l.operator(c)
-	}
-	if c == '"' {
-		return l.string()
-	}
-	if c == '#' {
-		return l.preprocessor()
-	}
-	if c == '/' {
-		if l.match('/') {
-			return l.lineComment()
-		} else if l.match('*') {
-			return l.blockComment()
+	return l.input[position:l.position]
+}
+
+func (l *Lexer) readString() string {
+	position := l.position + 1
+	for {
+		l.readChar()
+		if l.ch == '"' || l.ch == 0 {
+			break
 		}
 	}
-	if strings.ContainsRune("(),;{}", c) {
-		return l.addToken(TOKEN_SEPARATOR)
+	return l.input[position:l.position]
+}
+
+func (l *Lexer) readPreprocessorDirective() string {
+	position := l.position
+	for l.ch != '\n' && l.ch != 0 {
+		l.readChar()
 	}
-	return l.addToken(TOKEN_ERROR) // Unrecognized character
+	return l.input[position:l.position]
 }
 
 func (l *Lexer) skipWhitespace() {
-	for {
-		c := l.peek()
-		switch c {
-		case ' ', '\r', '\t':
-			l.advance()
-		case '\n':
-			l.line++
-			l.column = 0
-			l.advance()
-		default:
-			return
-		}
+	for l.ch == ' ' || l.ch == '\t' || l.ch == '\n' || l.ch == '\r' {
+		l.readChar()
 	}
 }
 
-func (l *Lexer) peek() rune {
-	if l.current >= len(l.source) {
+func isLetter(ch byte) bool {
+	return 'a' <= ch && ch <= 'z' || 'A' <= ch && ch <= 'Z'
+}
+
+func isDigit(ch byte) bool {
+	return '0' <= ch && ch <= '9'
+}
+
+func (l *Lexer) peekChar() byte {
+	if l.readPosition >= len(l.input) {
 		return 0
+	} else {
+		return l.input[l.readPosition]
 	}
-	r, _ := utf8.DecodeRuneInString(l.source[l.current:])
-	return r
-}
-
-func (l *Lexer) match(expected rune) bool {
-	if l.peek() == expected {
-		l.advance()
-		return true
-	}
-	return false
-}
-
-func (l *Lexer) identifier() Token {
-	for unicode.IsLetter(l.peek()) || unicode.IsDigit(l.peek()) || l.peek() == '_' {
-		l.advance()
-	}
-	lexeme := l.source[l.start:l.current]
-	if tType, ok := l.keywords[lexeme]; ok {
-		return l.addToken(tType)
-	}
-	return l.addToken(TOKEN_IDENTIFIER)
-}
-
-func (l *Lexer) number() Token {
-	for unicode.IsDigit(l.peek()) {
-		l.advance()
-	}
-	return l.addToken(TOKEN_NUMBER)
-}
-
-func (l *Lexer) operator(c rune) Token {
-	for strings.ContainsRune("+-*/=<>!&|", l.peek()) {
-		l.advance()
-	}
-	return l.addToken(TOKEN_OPERATOR)
-}
-
-func (l *Lexer) string() Token {
-	for l.peek() != '"' && l.peek() != 0 {
-		if l.peek() == '\n' {
-			l.line++
-		}
-		l.advance()
-	}
-	if l.peek() == '"' {
-		l.advance()
-	}
-	return l.addToken(TOKEN_STRING)
-}
-
-func (l *Lexer) preprocessor() Token {
-	if strings.HasPrefix(l.source[l.start:], "#include") {
-		l.advance() // skip '#'
-		for l.peek() != '\n' && l.peek() != 0 {
-			l.advance()
-		}
-		return l.addToken(TOKEN_INCLUDE)
-	}
-	for l.peek() != '\n' && l.peek() != 0 {
-		l.advance()
-	}
-	return l.addToken(TOKEN_PREPROCESSOR)
-}
-
-func (l *Lexer) lineComment() Token {
-	for l.peek() != '\n' && l.peek() != 0 {
-		l.advance()
-	}
-	return l.addToken(TOKEN_COMMENT)
-}
-
-func (l *Lexer) blockComment() Token {
-	for {
-		if l.peek() == '*' && l.match('/') {
-			break
-		}
-		if l.peek() == 0 {
-			break
-		}
-		l.advance()
-	}
-	return l.addToken(TOKEN_COMMENT)
 }
