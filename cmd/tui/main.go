@@ -152,12 +152,9 @@ func (m model) View() string {
 }
 
 func processSourceCode(source string) string {
-	// Preprocess the source code
-	preprocessedSource := lexer.Preprocess(source)
-
 	// Lexical Analysis
-	l := lexer.NewLexer(preprocessedSource)
-	tokens := l.Tokenize()
+	l := lexer.New(source)
+	tokens := l.IterateTokens()
 
 	// Parsing
 	p := parser.NewParser(tokens)

@@ -25,8 +25,8 @@ func main() {
 	}
 
 	// Lexical Analysis
-	l := lexer.NewLexer(string(source))
-	tokens := l.Tokenize()
+	l := lexer.New(string(source))
+	tokens := l.IterateTokens()
 
 	// Parsing
 	p := parser.NewParser(tokens)
