@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SecuritySpecification id="WIN">
+    <SecurityIssues>
+        <SecurityIssue id="WIN30-C">
+            <Type>Windows API Misuse</Type>
+            <Description>Improper usage of Windows APIs can lead to security vulnerabilities.</Description>
+            <Severity>High</Severity>
+            <Recommendation>Ensure proper usage of Windows APIs and validate inputs and outputs accordingly.</Recommendation>
+        </SecurityIssue>
+    </SecurityIssues>
+</SecuritySpecification>

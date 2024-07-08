@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SecuritySpecification id="DCL">
+    <SecurityIssues>
+        <SecurityIssue id="DCL30-C">
+            <Type>Appropriate Storage Durations</Type>
+            <Description>Declare objects with appropriate storage durations.</Description>
+            <Severity>High</Severity>
+            <Likelihood>Probable</Likelihood>
+            <RemediationCost>High</RemediationCost>
+            <Priority>P6</Priority>
+            <Level>L2</Level>
+            <Recommendation>Ensure that objects are declared with storage durations suitable for their use.</Recommendation>
+        </SecurityIssue>
+        <SecurityIssue id="DCL31-C">
+            <Type>Declare Before Use</Type>
+            <Description>Declare identifiers before using them.</Description>
+            <Severity>Low</Severity>
+            <Likelihood>Unlikely</Likelihood>
+            <RemediationCost>Low</RemediationCost>
+            <Priority>P3</Priority>
+            <Level>L3</Level>
+            <Recommendation>Ensure all identifiers are declared before use to prevent undefined behavior.</Recommendation>
+        </SecurityIssue>
+        <SecurityIssue id="DCL36-C">
+            <Type>Conflicting Linkage</Type>
+            <Description>Do not declare an identifier with conflicting linkage classifications.</Description>
+            <Severity>Medium</Severity>
+            <Likelihood>Probable</Likelihood>
+            <RemediationCost>Medium</RemediationCost>
+            <Priority>P8</Priority>
+            <Level>L2</Level>
+            <Recommendation>Avoid conflicting linkage classifications to ensure consistent and predictable behavior.</Recommendation>
+        </SecurityIssue>
+        <SecurityIssue id="DCL37-C">
+            <Type>Reserved Identifiers</Type>
+            <Description>Do not declare or define a reserved identifier.</Description>
+            <Severity>Low</Severity>
+            <Likelihood>Unlikely</Likelihood>
+            <RemediationCost>Low</RemediationCost>
+            <Priority>P3</Priority>
+            <Level>L3</Level>
+            <Recommendation>Avoid using reserved identifiers to prevent conflicts and undefined behavior.</Recommendation>
+        </SecurityIssue>
+        <SecurityIssue id="DCL38-C">
+            <Type>Flexible Array Member Syntax</Type>
+            <Description>Use the correct syntax when declaring a flexible array member.</Description>
+            <Severity>Low</Severity>
+            <Likelihood>Unlikely</Likelihood>
+            <RemediationCost>Low</RemediationCost>
+            <Priority>P3</Priority>
+            <Level>L3</Level>
+            <Recommendation>Ensure the correct syntax is used for flexible array members to avoid undefined behavior.</Recommendation>
+        </SecurityIssue>
+        <SecurityIssue id="DCL39-C">
+            <Type>Information Leakage</Type>
+            <Description>Avoid information leakage when passing a structure across a trust boundary.</Description>
+            <Severity>Low</Severity>
+            <Likelihood>Unlikely</Likelihood>
+            <RemediationCost>High</RemediationCost>
+            <Priority>P1</Priority>
+            <Level>L3</Level>
+            <Recommendation>Ensure structures are sanitized when crossing trust boundaries to prevent information leakage.</Recommendation>
+        </SecurityIssue>
+        <SecurityIssue id="DCL40-C">
+            <Type>Incompatible Declarations</Type>
+            <Description>Do not create incompatible declarations of the same function or object.</Description>
+            <Severity>Low</Severity>
+            <Likelihood>Unlikely</Likelihood>
+            <RemediationCost>Medium</RemediationCost>
+            <Priority>P2</Priority>
+            <Level>L3</Level>
+            <Recommendation>Ensure consistent declarations of functions and objects across translation units.</Recommendation>
+        </SecurityIssue>
+        <SecurityIssue id="DCL41-C">
+            <Type>Variables in Switch Statements</Type>
+            <Description>Do not declare variables inside a switch statement before the first case label.</Description>
+            <Severity>Medium</Severity>
+            <Likelihood>Unlikely</Likelihood>
+            <RemediationCost>Medium</RemediationCost>
+            <Priority>P4</Priority>
+            <Level>L3</Level>
+            <Recommendation>Declare variables outside switch statements or within case blocks to ensure proper initialization.</Recommendation>
+        </SecurityIssue>
+    </SecurityIssues>
+</SecuritySpecification>

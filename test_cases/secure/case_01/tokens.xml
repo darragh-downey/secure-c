@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tokens>
     <token>
-        <type>IDENT</type>
-        <literal>#include</literal>
+        <type>PREPROCESSOR</type>
+        <literal>#include &lt;stdio.h&gt;</literal>
     </token>
     <token>
-        <type>IDENT</type>
-        <literal>&lt;stdio.h&gt;</literal>
-    </token>
-    <token>
-        <type>IDENT</type>
+        <type>INT</type>
         <literal>int</literal>
     </token>
     <token>
@@ -38,7 +34,7 @@
     </token>
     <token>
         <type>STRING</type>
-        <literal>"Hello, world!\n"</literal>
+        <literal>Hello, World!\n</literal>
     </token>
     <token>
         <type>RPAREN</type>
@@ -49,7 +45,7 @@
         <literal>;</literal>
     </token>
     <token>
-        <type>IDENT</type>
+        <type>RETURN</type>
         <literal>return</literal>
     </token>
     <token>
@@ -63,5 +59,9 @@
     <token>
         <type>RBRACE</type>
         <literal>}</literal>
+    </token>
+    <token>
+        <type>EOF</type>
+        <literal></literal>
     </token>
 </tokens>

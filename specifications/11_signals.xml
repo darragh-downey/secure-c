@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SecuritySpecification id="SIG">
+    <SecurityIssues>
+        <SecurityIssue id="SIG30-C">
+            <Type>Signal Handling Issues</Type>
+            <Description>Improper handling of signals can lead to security vulnerabilities.</Description>
+            <Severity>High</Severity>
+            <Recommendation>Ensure proper handling of signals and avoid unsafe functions within signal handlers.</Recommendation>
+        </SecurityIssue>
+    </SecurityIssues>
+</SecuritySpecification>

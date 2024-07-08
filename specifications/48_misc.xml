@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SecuritySpecification id="MSC">
+    <SecurityIssues>
+        <SecurityIssue id="MSC30-C">
+            <Type>General Best Practices</Type>
+            <Description>General best practices for secure coding in C and C++.</Description>
+            <Severity>High</Severity>
+            <Recommendation>Follow secure coding best practices to avoid common vulnerabilities.</Recommendation>
+        </SecurityIssue>
+    </SecurityIssues>
+</SecuritySpecification>

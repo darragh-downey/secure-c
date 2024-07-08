@@ -5,17 +5,24 @@
             <Node value="stdio.h" />
         </Node>
         <Node value="function_declaration">
-            <Node value="int" />
-            <Node value="main" />
+            <Node value="return_type">
+                <Node value="int" />
+            </Node>
+            <Node value="function_name">
+                <Node value="main" />
+            </Node>
             <Node value="parameters" />
             <Node value="block">
                 <Node value="expression_statement">
-                    <Node value="printf">
-                        <Node value="Hello, World!\n" />
+                    <Node value="call">
+                        <Node value="printf" />
+                        <Node value="arguments">
+                            <Node value="string_literal">Hello, World!\n</Node>
+                        </Node>
                     </Node>
                 </Node>
                 <Node value="return_statement">
-                    <Node value="0" />
+                    <Node value="int_literal">0</Node>
                 </Node>
             </Node>
         </Node>

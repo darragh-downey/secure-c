@@ -22,19 +22,28 @@ func (p *Parser) Parse() (*ASTNode, error) {
 		if err != nil {
 			return nil, err
 		}
-		root.Children = append(root.Children, node)
+		if node != nil {
+			root.Children = append(root.Children, node)
+		}
 	}
 	return root, nil
 }
 
 func (p *Parser) parseDeclarationOrStatement() (*ASTNode, error) {
-	if p.match(lexer.IDENT) {
-		identifier := p.previous()
-		if identifier.Literal == "int" || identifier.Literal == "char" || identifier.Literal == "void" {
-			return p.parseFunctionOrVariableDeclaration(identifier)
-		}
+	if p.match(lexer.PREPROCESSOR) {
+		return p.parsePreprocessorDirective()
+	} else if p.match(lexer.INT, lexer.CHAR, lexer.VOID) {
+		keyword := p.previous()
+		return p.parseFunctionOrVariableDeclaration(keyword)
+	} else if p.match(lexer.IDENT) {
+		return p.parseExpressionStatement()
 	}
 	return nil, p.error(p.peek(), "expected declaration or statement")
+}
+
+func (p *Parser) parsePreprocessorDirective() (*ASTNode, error) {
+	token := p.previous()
+	return &ASTNode{Value: "include", Children: []*ASTNode{{Value: token.Literal}}}, nil
 }
 
 func (p *Parser) parseFunctionOrVariableDeclaration(keyword lexer.Token) (*ASTNode, error) {
@@ -86,12 +95,14 @@ func (p *Parser) parseBlock() (*ASTNode, error) {
 	}
 
 	block := &ASTNode{Value: "block"}
-	for !p.isAtEnd() && p.peek().Literal != "}" {
+	for !p.isAtEnd() && !p.check(lexer.RBRACE) {
 		node, err := p.parseDeclarationOrStatement()
 		if err != nil {
 			return nil, err
 		}
-		block.Children = append(block.Children, node)
+		if node != nil {
+			block.Children = append(block.Children, node)
+		}
 	}
 
 	if _, err := p.consume(lexer.RBRACE, "expected '}'"); err != nil {
@@ -104,7 +115,7 @@ func (p *Parser) parseBlock() (*ASTNode, error) {
 func (p *Parser) parseParameters() (*ASTNode, error) {
 	params := &ASTNode{Value: "parameters"}
 
-	for !p.isAtEnd() && p.peek().Literal != ")" {
+	for !p.isAtEnd() && !p.check(lexer.RPAREN) {
 		keyword, err := p.consume(lexer.IDENT, "expected type")
 		if err != nil {
 			return nil, err
@@ -130,6 +141,53 @@ func (p *Parser) parseParameters() (*ASTNode, error) {
 		break
 	}
 	return params, nil
+}
+
+func (p *Parser) parseExpressionStatement() (*ASTNode, error) {
+	expr, err := p.parseExpression()
+	if err != nil {
+		return nil, err
+	}
+	if _, err := p.consume(lexer.SEMICOLON, "expected ';'"); err != nil {
+		return nil, err
+	}
+	return &ASTNode{Value: "expression_statement", Children: []*ASTNode{expr}}, nil
+}
+
+func (p *Parser) parseExpression() (*ASTNode, error) {
+	if p.match(lexer.IDENT) {
+		ident := p.previous()
+		if p.match(lexer.LPAREN) {
+			return p.parseFunctionCall(ident)
+		}
+		return &ASTNode{Value: ident.Literal}, nil
+	}
+	return nil, p.error(p.peek(), "expected expression")
+}
+
+func (p *Parser) parseFunctionCall(ident lexer.Token) (*ASTNode, error) {
+	args := &ASTNode{Value: "arguments"}
+	for !p.isAtEnd() && !p.check(lexer.RPAREN) {
+		arg, err := p.parseExpression()
+		if err != nil {
+			return nil, err
+		}
+		args.Children = append(args.Children, arg)
+		if p.match(lexer.COMMA) {
+			continue
+		}
+		break
+	}
+	if _, err := p.consume(lexer.RPAREN, "expected ')'"); err != nil {
+		return nil, err
+	}
+	return &ASTNode{
+		Value: "call",
+		Children: []*ASTNode{
+			{Value: ident.Literal},
+			args,
+		},
+	}, nil
 }
 
 func (p *Parser) match(tokenTypes ...lexer.TokenType) bool {

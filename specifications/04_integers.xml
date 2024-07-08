@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SecuritySpecification id="INT">
+    <SecurityIssues>
+        <SecurityIssue id="INT30-C">
+            <Type>Integer Overflow</Type>
+            <Description>Occurs when an arithmetic operation results in a value that exceeds the storage capacity of the integer type.</Description>
+            <Severity>Medium</Severity>
+            <Recommendation>Check for overflow conditions before performing arithmetic operations. Use appropriate data types to handle large values.</Recommendation>
+        </SecurityIssue>
+        <SecurityIssue id="INT31-C">
+            <Type>Avoid Integer Overflow</Type>
+            <Description>Avoid integer overflow by using safe integer operations.</Description>
+            <Severity>High</Severity>
+            <Recommendation>Use safe integer operations and check for overflow conditions.</Recommendation>
+        </SecurityIssue>
+    </SecurityIssues>
+</SecuritySpecification>

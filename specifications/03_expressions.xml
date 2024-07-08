@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SecuritySpecification id="EXP">
+    <SecurityIssues>
+        <SecurityIssue id="EXP30-C">
+            <Type>Implementation-Defined Behavior</Type>
+            <Description>Do not depend on the order of evaluation for side effects</Description>
+            <Severity>Medium</Severity>
+            <Likelihood>Probable</Likelihood>
+            <RemediationCost>Medium</RemediationCost>
+            <Priority>P8</Priority>
+            <Level>L2</Level>
+            <Recommendation>Avoid using implementation-defined behavior to ensure code portability and predictability.</Recommendation>
+        </SecurityIssue>
+        <SecurityIssue id="EXP32-C">
+            <Type>Operator Precedence</Type>
+            <Description>Do not access a volatile object through a nonvolatile reference</Description>
+            <Severity>Low</Severity>
+            <Likelihood>Likely</Likelihood>
+            <RemediationCost>Medium</RemediationCost>
+            <Priority>P6</Priority>
+            <Level>L2</Level>
+            <Recommendation>Use parentheses to explicitly define operator precedence.</Recommendation>
+        </SecurityIssue>
+        <SecurityIssue id="EXP33-C">
+            <Type>Pointer Arithmetic</Type>
+            <Description>Do not read uninitialised memory</Description>
+            <Severity>High</Severity>
+            <Likelihood>Probable</Likelihood>
+            <RemediationCost>Medium</RemediationCost>
+            <Priority>P12</Priority>
+            <Level>L1</Level>
+            <Recommendation>Use 'sizeof' on arrays, not on pointers, to ensure correct memory calculations.</Recommendation>
+        </SecurityIssue>
+        <SecurityIssue id="EXP34-C">
+            <Type>Null Pointer Dereference</Type>
+            <Description>Do not dereference null pointers.</Description>
+            <Severity>High</Severity>
+            <Likelihood>Likely</Likelihood>
+            <RemediationCost>Medium</RemediationCost>
+            <Priority>P18</Priority>
+            <Level>L1</Level>
+            <Recommendation>Check for null before dereferencing pointers.</Recommendation>
+        </SecurityIssue>
+        <SecurityIssue id="EXP35-C">
+            <Type>Pointer Arithmetic</Type>
+            <Description>Do not modify objects with temporary lifetime.</Description>
+            <Severity>Low</Severity>
+            <Likelihood>Probable</Likelihood>
+            <RemediationCost>Medium</RemediationCost>
+            <Priority>P4</Priority>
+            <Level>L3</Level>
+            <Recommendation>TODO</Recommendation>
+        </SecurityIssue>
+        <SecurityIssue id="EXP36-C">
+            <Type>Bitwise Operators</Type>
+            <Description>Do not use bitwise operators with logical operators.</Description>
+            <Severity>Medium</Severity>
+            <Likelihood>Likely</Likelihood>
+            <RemediationCost>Medium</RemediationCost>
+            <Priority>P8</Priority>
+            <Level>L2</Level>
+            <Recommendation>TODO</Recommendation>
+        </SecurityIssue>
+        <SecurityIssue id="EXP37-C">
+            <Type>Signal Handlers</Type>
+            <Description>Do not perform operations that are unsafe in signal handlers.</Description>
+            <Severity>High</Severity>
+            <Likelihood>Likely</Likelihood>
+            <RemediationCost>High</RemediationCost>
+            <Priority>P12</Priority>
+            <Level>L1</Level>
+            <Recommendation>TODO</Recommendation>
+        </SecurityIssue>
+        <SecurityIssue id="EXP38-C">
+            <Type>Unusual Constructs</Type>
+            <Description>Do not use the 'goto' statement.</Description>
+            <Severity>Medium</Severity>
+            <Likelihood>Likely</Likelihood>
+            <RemediationCost>Medium</RemediationCost>
+            <Priority>P8</Priority>
+            <Level>L2</Level>
+            <Recommendation>TODO</Recommendation>
+        </SecurityIssue>
+        <SecurityIssue id="EXP39-C">
+            <Type>Relational and Equality Operators</Type>
+            <Description>Do not compare function pointers to constant values.</Description>
+            <Severity>Medium</Severity>
+            <Likelihood>Likely</Likelihood>
+            <RemediationCost>Medium</RemediationCost>
+            <Priority>P8</Priority>
+            <Level>L2</Level>
+            <Recommendation>TODO</Recommendation>
+        </SecurityIssue>
+        <SecurityIssue id="EXP40-C">
+            <Type>Relational and Equality Operators</Type>
+            <Description>Do not compare function pointers to constant values.</Description>
+            <Severity>Medium</Severity>
+            <Likelihood>Likely</Likelihood>
+            <RemediationCost>Medium</RemediationCost>
+            <Priority>P8</Priority>
+            <Level>L2</Level>
+            <Recommendation>TODO</Recommendation>
+        </SecurityIssue>
+        <SecurityIssue id="EXP41-C">
+            <Type>Relational and Equality Operators</Type>
+            <Description>Do not compare function pointers to constant values.</Description>
+            <Severity>Medium</Severity>
+            <Likelihood>Likely</Likelihood>
+            <RemediationCost>Medium</RemediationCost>
+            <Priority>P8</Priority>
+            <Level>L2</Level>
+            <Recommendation>TODO</Recommendation>
+        </SecurityIssue>
+        <SecurityIssue id="EXP42-C">
+            <Type>Relational and Equality Operators</Type>
+            <Description>Do not compare function pointers to constant values.</Description>
+            <Severity>Medium</Severity>
+            <Likelihood>Likely</Likelihood>
+            <RemediationCost>Medium</RemediationCost>
+            <Priority>P8</Priority>
+            <Level>L2</Level>
+            <Recommendation>Ensure function pointers are compared appropriately to avoid incorrect behavior.</Recommendation>
+        </SecurityIssue>
+        <SecurityIssue id="EXP43-C">
+            <Type>Relational and Equality Operators</Type>
+            <Description>Do not compare function pointers to constant values.</Description>
+            <Severity>Medium</Severity>
+            <Likelihood>Likely</Likelihood>
+            <RemediationCost>Medium</RemediationCost>
+            <Priority>P8</Priority>
+            <Level>L2</Level>
+            <Recommendation>Ensure function pointers are compared appropriately to avoid incorrect behavior.</Recommendation>
+        </SecurityIssue>
+        <SecurityIssue id="EXP44-C">
+            <Type>Relational and Equality Operators</Type>
+            <Description>Do not compare function pointers to constant values.</Description>
+            <Severity>Medium</Severity>
+            <Likelihood>Likely</Likelihood>
+            <RemediationCost>Medium</RemediationCost>
+            <Priority>P8</Priority>
+            <Level>L2</Level>
+            <Recommendation>Ensure function pointers are compared appropriately to avoid incorrect behavior.</Recommendation>
+        </SecurityIssue>
+        <SecurityIssue id="EXP45-C">
+            <Type>Relational and Equality Operators</Type>
+            <Description>Do not compare function pointers to constant values.</Description>
+            <Severity>Medium</Severity>
+            <Likelihood>Likely</Likelihood>
+            <RemediationCost>Medium</RemediationCost>
+            <Priority>P8</Priority>
+            <Level>L2</Level>
+            <Recommendation>Ensure function pointers are compared appropriately to avoid incorrect behavior.</Recommendation>
+        </SecurityIssue>
+        <SecurityIssue id="EXP46-C">
+            <Type>Relational and Equality Operators</Type>
+            <Description>Do not compare function pointers to constant values.</Description>
+            <Severity>Medium</Severity>
+            <Likelihood>Likely</Likelihood>
+            <RemediationCost>Medium</RemediationCost>
+            <Priority>P8</Priority>
+            <Level>L2</Level>
+            <Recommendation>Ensure function pointers are compared appropriately to avoid incorrect behavior.</Recommendation>
+        </SecurityIssue>
+        <SecurityIssue id="EXP47-C">
+            <Type>Relational and Equality Operators</Type>
+            <Description>Do not compare function pointers to constant values.</Description>
+            <Severity>Medium</Severity>
+            <Likelihood>Likely</Likelihood>
+            <RemediationCost>Medium</RemediationCost>
+            <Priority>P8</Priority>
+            <Level>L2</Level>
+            <Recommendation>Ensure function pointers are compared appropriately to avoid incorrect behavior.</Recommendation>
+        </SecurityIssue>
+    </SecurityIssues>
+
+</SecuritySpecification>

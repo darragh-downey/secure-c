@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SecuritySpecification id="MEM">
+    <SecurityIssues>
+        <SecurityIssue id="MEM30-C">
+            <Type>Use After Free</Type>
+            <Description>Occurs when a program continues to use a pointer after it has been freed.</Description>
+            <Severity>High</Severity>
+            <Recommendation>Ensure that pointers are not used after being freed. Set pointers to NULL after freeing them.</Recommendation>
+        </SecurityIssue>
+        <SecurityIssue id="MEM31-C">
+            <Type>Double Free</Type>
+            <Description>Occurs when a program calls free() twice on the same memory allocation, leading to undefined behavior.</Description>
+            <Severity>High</Severity>
+            <Recommendation>Ensure that memory is freed only once. Set pointers to NULL after freeing them to prevent double frees.</Recommendation>
+        </SecurityIssue>
+        <SecurityIssue id="MEM32-C">
+            <Type>Memory Leak</Type>
+            <Description>Occurs when a program fails to release memory that is no longer needed, leading to increased memory usage over time.</Description>
+            <Severity>Medium</Severity>
+            <Recommendation>Ensure that all allocated memory is freed when it is no longer needed. Use tools to detect memory leaks.</Recommendation>
+        </SecurityIssue>
+    </SecurityIssues>
+</SecuritySpecification>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SecuritySpecification id="STR">
+    <SecurityIssues>
+        <SecurityIssue id="STR30-C">
+            <Type>Improper Null Termination</Type>
+            <Description>Failing to null-terminate a string can lead to undefined behavior and security vulnerabilities.</Description>
+            <Severity>High</Severity>
+            <Recommendation>Ensure that strings are properly null-terminated.</Recommendation>
+        </SecurityIssue>
+        <SecurityIssue id="STR31-C">
+            <Type>Avoid String Truncation</Type>
+            <Description>Avoid string truncation by using safe string handling functions.</Description>
+            <Severity>Medium</Severity>
+            <Recommendation>Use safe string handling functions to avoid truncation.</Recommendation>
+        </SecurityIssue>
+    </SecurityIssues>
+</SecuritySpecification>

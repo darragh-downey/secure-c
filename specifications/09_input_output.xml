@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SecuritySpecification id="FIO">
+    <SecurityIssues>
+        <SecurityIssue id="FIO30-C">
+            <Type>Improper File Handling</Type>
+            <Description>Improper handling of file operations can lead to security vulnerabilities.</Description>
+            <Severity>High</Severity>
+            <Recommendation>Ensure proper handling of file operations, including checking for errors and validating file paths.</Recommendation>
+        </SecurityIssue>
+    </SecurityIssues>
+</SecuritySpecification>

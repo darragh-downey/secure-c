@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SecuritySpecification id="POS">
+    <SecurityIssues>
+        <SecurityIssue id="POS30-C">
+            <Type>POSIX API Misuse</Type>
+            <Description>Improper usage of POSIX APIs can lead to security vulnerabilities.</Description>
+            <Severity>High</Severity>
+            <Recommendation>Ensure proper usage of POSIX APIs and validate inputs and outputs accordingly.</Recommendation>
+        </SecurityIssue>
+    </SecurityIssues>
+</SecuritySpecification>

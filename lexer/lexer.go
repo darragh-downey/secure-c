@@ -48,41 +48,35 @@ func (l *Lexer) NextToken() Token {
 		tok.Literal = l.readPreprocessorDirective()
 	case '=':
 		if l.peekChar() == '=' {
-			ch := l.ch
 			l.readChar()
-			tok = Token{Type: EQ, Literal: string(ch) + string(l.ch)}
+			tok = newToken(EQ, l.ch, l.line)
 		} else {
 			tok = newToken(ASSIGN, l.ch, l.line)
 		}
 	case '!':
 		if l.peekChar() == '=' {
-			ch := l.ch
 			l.readChar()
-			tok = Token{Type: NOT_EQ, Literal: string(ch) + string(l.ch)}
+			tok = newToken(NOT_EQ, l.ch, l.line)
 		} else {
 			tok = newToken(BANG, l.ch, l.line)
 		}
 	case '+':
 		if l.peekChar() == '+' {
-			ch := l.ch
 			l.readChar()
-			tok = Token{Type: INC, Literal: string(ch) + string(l.ch)}
+			tok = newToken(INC, l.ch, l.line)
 		} else if l.peekChar() == '=' {
-			ch := l.ch
 			l.readChar()
-			tok = Token{Type: PLUS_EQ, Literal: string(ch) + string(l.ch)}
+			tok = newToken(PLUS_EQ, l.ch, l.line)
 		} else {
 			tok = newToken(PLUS, l.ch, l.line)
 		}
 	case '-':
 		if l.peekChar() == '-' {
-			ch := l.ch
 			l.readChar()
-			tok = Token{Type: DEC, Literal: string(ch) + string(l.ch)}
+			tok = newToken(DEC, l.ch, l.line)
 		} else if l.peekChar() == '=' {
-			ch := l.ch
 			l.readChar()
-			tok = Token{Type: MINUS_EQ, Literal: string(ch) + string(l.ch)}
+			tok = newToken(MINUS_EQ, l.ch, l.line)
 		} else {
 			tok = newToken(MINUS, l.ch, l.line)
 		}
@@ -106,25 +100,21 @@ func (l *Lexer) NextToken() Token {
 		tok = newToken(ASTERISK, l.ch, l.line)
 	case '<':
 		if l.peekChar() == '=' {
-			ch := l.ch
 			l.readChar()
-			tok = Token{Type: LE, Literal: string(ch) + string(l.ch)}
+			tok = newToken(LE, l.ch, l.line)
 		} else if l.peekChar() == '<' {
-			ch := l.ch
 			l.readChar()
-			tok = Token{Type: SHL, Literal: string(ch) + string(l.ch)}
+			tok = newToken(SHL, l.ch, l.line)
 		} else {
 			tok = newToken(LT, l.ch, l.line)
 		}
 	case '>':
 		if l.peekChar() == '=' {
-			ch := l.ch
 			l.readChar()
-			tok = Token{Type: GE, Literal: string(ch) + string(l.ch)}
+			tok = newToken(GE, l.ch, l.line)
 		} else if l.peekChar() == '>' {
-			ch := l.ch
 			l.readChar()
-			tok = Token{Type: SHR, Literal: string(ch) + string(l.ch)}
+			tok = newToken(SHR, l.ch, l.line)
 		} else {
 			tok = newToken(GT, l.ch, l.line)
 		}

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SecuritySpecification id="FLP">
+    <SecurityIssues>
+        <SecurityIssue id="FLP30-C">
+            <Type>Floating Point Precision</Type>
+            <Description>Floating point operations can suffer from precision loss leading to incorrect results.</Description>
+            <Severity>Medium</Severity>
+            <Recommendation>Use appropriate precision types and be aware of precision loss in floating point operations.</Recommendation>
+        </SecurityIssue>
+    </SecurityIssues>
+</SecuritySpecification>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SecuritySpecification id="ARR">
+    <SecurityIssues>
+        <SecurityIssue id="ARR30-C">
+            <Type>Array Index Out of Bounds</Type>
+            <Description>Accessing an array out of its bounds can lead to undefined behavior and security vulnerabilities.</Description>
+            <Severity>High</Severity>
+            <Recommendation>Always check array indices to ensure they are within bounds.</Recommendation>
+        </SecurityIssue>
+        <SecurityIssue id="ARR31-C">
+            <Type>Ensure Array Indices Are Valid</Type>
+            <Description>Ensure that array indices are valid to prevent out-of-bounds access.</Description>
+            <Severity>High</Severity>
+            <Recommendation>Validate array indices before accessing array elements.</Recommendation>
+        </SecurityIssue>
+    </SecurityIssues>
+</SecuritySpecification>

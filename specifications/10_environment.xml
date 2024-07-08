@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SecuritySpecification id="ENV">
+    <SecurityIssues>
+        <SecurityIssue id="ENV30-C">
+            <Type>Improper Environment Configuration</Type>
+            <Description>Improper configuration of the environment can lead to security vulnerabilities.</Description>
+            <Severity>High</Severity>
+            <Recommendation>Ensure that the environment is properly configured and secured.</Recommendation>
+        </SecurityIssue>
+    </SecurityIssues>
+</SecuritySpecification>

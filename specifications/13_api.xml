@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SecuritySpecification id="API">
+    <SecurityIssues>
+        <SecurityIssue id="API30-C">
+            <Type>Improper API Usage</Type>
+            <Description>Improper usage of APIs can lead to security vulnerabilities.</Description>
+            <Severity>High</Severity>
+            <Recommendation>Ensure proper usage of APIs and validate inputs and outputs accordingly.</Recommendation>
+        </SecurityIssue>
+    </SecurityIssues>
+</SecuritySpecification>

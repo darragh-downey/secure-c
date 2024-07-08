@@ -38,7 +38,7 @@ func TestLexer(t *testing.T) {
 			for i, actualToken := range actualTokens {
 				expectedToken := expectedTokens[i]
 				if actualToken.Type != lexer.TokenType(expectedToken.Type) || actualToken.Literal != expectedToken.Literal {
-					t.Errorf("Mismatch at token %d: expected (%s, %s), got (%s, %s)",
+					t.Errorf("Mismatch at token %d: expected %s, %s , got  %s, %s ",
 						i, expectedToken.Type, expectedToken.Literal, actualToken.Type, actualToken.Literal)
 				}
 			}

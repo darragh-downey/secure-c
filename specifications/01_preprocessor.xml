@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SecuritySpecification id="PRE">
+    <SecurityIssues>
+        <SecurityIssue id="PRE30-C">
+            <Type>Universal Character Name Concatenation</Type>
+            <Description>Do not create a universal character name through concatenation.</Description>
+            <Severity>Medium</Severity>
+            <Likelihood>Unlikely</Likelihood>
+            <RemediationCost>Medium</RemediationCost>
+            <Priority>P4</Priority>
+            <Level>L3</Level>
+            <Recommendation>Avoid using concatenation to form universal character names. Use direct encoding methods instead.</Recommendation>
+        </SecurityIssue>
+        <SecurityIssue id="PRE31-C">
+            <Type>Side Effects in Macro Arguments</Type>
+            <Description>Avoid side effects in arguments to unsafe macros.</Description>
+            <Severity>High</Severity>
+            <Likelihood>Likely</Likelihood>
+            <RemediationCost>High</RemediationCost>
+            <Priority>P6</Priority>
+            <Level>L2</Level>
+            <Recommendation>Use safer alternatives to macros or ensure arguments do not produce side effects.</Recommendation>
+        </SecurityIssue>
+        <SecurityIssue id="PRE32-C">
+            <Type>Unsafe Macro Invocations</Type>
+            <Description>Do not use preprocessor directives in invocations of function-like macros.</Description>
+            <Severity>High</Severity>
+            <Likelihood>Likely</Likelihood>
+            <RemediationCost>High</RemediationCost>
+            <Priority>P6</Priority>
+            <Level>L2</Level>
+            <Recommendation>Ensure that preprocessor directives are not used in the arguments of function-like macros to prevent unexpected behavior.</Recommendation>
+        </SecurityIssue>
+    </SecurityIssues>
+</SecuritySpecification>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SecuritySpecification id="CON">
+    <SecurityIssues>
+        <SecurityIssue id="CON30-C">
+            <Type>Improper Locking</Type>
+            <Description>Improper use of locking mechanisms can lead to deadlocks and race conditions.</Description>
+            <Severity>High</Severity>
+            <Recommendation>Ensure proper use of locking mechanisms to prevent deadlocks and race conditions.</Recommendation>
+        </SecurityIssue>
+    </SecurityIssues>
+</SecuritySpecification>
