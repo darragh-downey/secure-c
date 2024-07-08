@@ -4,11 +4,11 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/darragh-downey/secure-c/codegen"
-	"github.com/darragh-downey/secure-c/lexer"
-	"github.com/darragh-downey/secure-c/optimizer"
-	"github.com/darragh-downey/secure-c/parser"
-	"github.com/darragh-downey/secure-c/semantic"
+	"github.com/darragh-downey/secure-c/pkg/codegen"
+	"github.com/darragh-downey/secure-c/pkg/lexer"
+	"github.com/darragh-downey/secure-c/pkg/optimizer"
+	"github.com/darragh-downey/secure-c/pkg/parser"
+	"github.com/darragh-downey/secure-c/pkg/semantic"
 )
 
 func main() {

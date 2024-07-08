@@ -1,6 +1,6 @@
 package optimizer
 
-import "github.com/darragh-downey/secure-c/parser"
+import "github.com/darragh-downey/secure-c/pkg/parser"
 
 type Optimizer struct{}
 

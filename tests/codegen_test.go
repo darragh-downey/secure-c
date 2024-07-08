@@ -3,8 +3,8 @@ package tests
 import (
 	"testing"
 
-	"github.com/darragh-downey/secure-c/codegen"
-	"github.com/darragh-downey/secure-c/parser"
+	"github.com/darragh-downey/secure-c/pkg/codegen"
+	"github.com/darragh-downey/secure-c/pkg/parser"
 )
 
 func TestCodeGenerator(t *testing.T) {

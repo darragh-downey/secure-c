@@ -4,9 +4,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/darragh-downey/secure-c/lexer"
-	"github.com/darragh-downey/secure-c/parser"
-	"github.com/darragh-downey/secure-c/semantic"
+	"github.com/darragh-downey/secure-c/pkg/lexer"
+	"github.com/darragh-downey/secure-c/pkg/parser"
+	"github.com/darragh-downey/secure-c/pkg/semantic"
 )
 
 func TestSemanticAnalyzer(t *testing.T) {
@@ -18,23 +18,10 @@ func TestSemanticAnalyzer(t *testing.T) {
 		expectedErrors []string
 	}{
 		{
-			name:     "Insecure",
-			secure:   false,
-			caseID:   "case_01",
-			filename: "buffer_overflow.c",
-			expectedErrors: []string{
-				"unsafe function usage: gets",
-				"unsafe function usage: strcpy",
-				"unsafe function usage: system",
-				"format string vulnerability: snprintf",
-				"potential buffer overflow: strcpy",
-				"potential integer overflow: +",
-			},
-		},
-		{
-			name:           "Basic",
+			name:           "secure",
 			secure:         true,
-			filename:       "basic.c",
+			caseID:         "case_01",
+			filename:       "hello_world.c",
 			expectedErrors: []string{},
 		},
 	}

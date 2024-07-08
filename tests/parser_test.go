@@ -3,8 +3,8 @@ package tests
 import (
 	"testing"
 
-	"github.com/darragh-downey/secure-c/lexer"
-	"github.com/darragh-downey/secure-c/parser"
+	"github.com/darragh-downey/secure-c/pkg/lexer"
+	"github.com/darragh-downey/secure-c/pkg/parser"
 )
 
 func TestParser(t *testing.T) {
@@ -20,7 +20,7 @@ func TestParser(t *testing.T) {
 			secure:   true,
 			filename: "hello_world.c",
 			caseID:   "case_01",
-			expected: "ast_hello_world.xml",
+			expected: "ast.xml",
 		},
 	}
 

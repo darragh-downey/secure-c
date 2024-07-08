@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"fmt"
 
-	"github.com/darragh-downey/secure-c/parser"
+	"github.com/darragh-downey/secure-c/pkg/parser"
 )
 
 type CodeGenerator struct {

@@ -3,7 +3,9 @@ package tests
 import (
 	"testing"
 
-	"github.com/darragh-downey/secure-c/lexer"
+	"github.com/darragh-downey/secure-c/pkg/token"
+
+	"github.com/darragh-downey/secure-c/pkg/lexer"
 )
 
 func TestLexer(t *testing.T) {
@@ -29,19 +31,12 @@ func TestLexer(t *testing.T) {
 			expectedTokens := loadExpectedCase(t, tc.secure, tc.caseID, tc.expected).Tokens
 
 			l := lexer.New(source)
-			actualTokens := l.IterateTokens()
-
-			if len(actualTokens) != len(expectedTokens) {
-				t.Fatalf("Number of tokens mismatch: expected %d, got %d", len(expectedTokens), len(actualTokens))
+			var tokens []token.Token
+			for tok := l.NextToken(); tok.Type != token.EOF; tok = l.NextToken() {
+				tokens = append(tokens, tok)
 			}
 
-			for i, actualToken := range actualTokens {
-				expectedToken := expectedTokens[i]
-				if actualToken.Type != lexer.TokenType(expectedToken.Type) || actualToken.Literal != expectedToken.Literal {
-					t.Errorf("Mismatch at token %d: expected %s, %s , got  %s, %s ",
-						i, expectedToken.Type, expectedToken.Literal, actualToken.Type, actualToken.Literal)
-				}
-			}
+			verifyTokens(t, tokens, expectedTokens)
 		})
 	}
 }
