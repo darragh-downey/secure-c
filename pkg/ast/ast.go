@@ -71,6 +71,7 @@ func (ls *ConstStatement) String() string {
 type Identifier struct {
 	Token token.Token
 	Value string
+	Type  string
 }
 
 func (i *Identifier) expressionNode()      {}
@@ -174,14 +175,14 @@ func (ie *InfixExpression) String() string {
 	return out.String()
 }
 
-type Boolean struct {
+type BooleanLiteral struct {
 	Token token.Token
 	Value bool
 }
 
-func (b *Boolean) expressionNode()      {}
-func (b *Boolean) TokenLiteral() string { return b.Token.Literal }
-func (b *Boolean) String() string       { return b.Token.Literal }
+func (bl *BooleanLiteral) expressionNode()      {}
+func (bl *BooleanLiteral) TokenLiteral() string { return bl.Token.Literal }
+func (bl *BooleanLiteral) String() string       { return bl.Token.Literal }
 
 type IfExpression struct {
 	Token       token.Token // the 'if' token
@@ -229,6 +230,7 @@ type FunctionLiteral struct {
 	Token      token.Token
 	Parameters []*Identifier
 	Body       *BlockStatement
+	ReturnType Expression
 }
 
 func (fl *FunctionLiteral) expressionNode()      {}
@@ -280,6 +282,7 @@ func (ce *CallExpression) String() string {
 type ArrayLiteral struct {
 	Token    token.Token // the '[' token
 	Elements []Expression
+	Size     int
 }
 
 func (al *ArrayLiteral) expressionNode()      {}

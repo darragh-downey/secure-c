@@ -5,6 +5,8 @@ type TokenType string
 type Token struct {
 	Type    TokenType
 	Literal string
+	Line    int
+	Column  int
 }
 
 const (
@@ -80,6 +82,7 @@ const (
 	ELSE         = "ELSE"
 	ENUM         = "ENUM"
 	EXTERN       = "EXTERN"
+	FUNCTION     = "FUNCTION"
 	FLOAT        = "FLOAT"
 	FOR          = "FOR"
 	GOTO         = "GOTO"
@@ -112,6 +115,8 @@ const (
 	NORETURN     = "NORETURN"
 	STATICASSERT = "STATICASSERT"
 	THREADLOCAL  = "THREADLOCAL"
+	TRUE         = "TRUE"
+	FALSE        = "FALSE"
 
 	// Preprocessor directives
 	INCLUDE  = "#include"
@@ -129,6 +134,9 @@ const (
 
 var keywords = map[string]TokenType{
 	"auto":           AUTO,
+	"bool":           BOOL,
+	"true":           TRUE,
+	"false":          FALSE,
 	"break":          BREAK,
 	"case":           CASE,
 	"char":           CHAR,

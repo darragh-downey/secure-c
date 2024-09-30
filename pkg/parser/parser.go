@@ -60,12 +60,12 @@ func New(l *lexer.Lexer) *Parser {
 	p.registerPrefix(token.STRING, p.parseStringLiteral)
 	p.registerPrefix(token.BANG, p.parsePrefixExpression)
 	p.registerPrefix(token.MINUS, p.parsePrefixExpression)
-	// p.registerPrefix(token.TRUE, p.parseBoolean)
-	// p.registerPrefix(token.FALSE, p.parseBoolean)
+	p.registerPrefix(token.TRUE, p.parseBooleanLiteral)
+	p.registerPrefix(token.FALSE, p.parseBooleanLiteral)
 	p.registerPrefix(token.LPAREN, p.parseGroupedExpression)
 	p.registerPrefix(token.IF, p.parseIfExpression)
 
-	// p.registerPrefix(token.FUNCTION, p.parseFunctionLiteral)
+	p.registerPrefix(token.FUNCTION, p.parseFunctionLiteral)
 
 	p.registerPrefix(token.LBRACKET, p.parseArrayLiteral)
 	p.registerPrefix(token.LBRACE, p.parseHashLiteral)
@@ -95,7 +95,8 @@ func (p *Parser) Errors() []string {
 }
 
 func (p *Parser) peekError(t token.TokenType) {
-	msg := fmt.Sprintf("expected next token to be %s, got %s instead", t, p.peekToken.Type)
+	msg := fmt.Sprintf("expected next token to be %s, got %s instead (line %d, col %d)",
+		t, p.peekToken.Type, p.peekToken.Line, p.peekToken.Column)
 	p.errors = append(p.errors, msg)
 }
 
@@ -183,9 +184,9 @@ func (p *Parser) parseReturnStatement() *ast.ReturnStatement {
 	return stmt
 }
 
-//func (p *Parser) parseBoolean() ast.Expression {
-//	return &ast.Boolean{Token: p.curToken, Value: p.curTokenIs(token.TRUE)}
-//}
+func (p *Parser) parseBooleanLiteral() ast.Expression {
+	return &ast.BooleanLiteral{Token: p.curToken, Value: p.curTokenIs(token.TRUE)}
+}
 
 func (p *Parser) parseGroupedExpression() ast.Expression {
 	p.nextToken()
@@ -204,6 +205,7 @@ func (p *Parser) parseArrayLiteral() ast.Expression {
 	array := &ast.ArrayLiteral{Token: p.curToken}
 
 	array.Elements = p.parseExpressionList(token.RBRACKET)
+	array.Size = len(array.Elements)
 
 	return array
 }
@@ -366,6 +368,12 @@ func (p *Parser) parseFunctionLiteral() ast.Expression {
 	}
 
 	lit.Parameters = p.parseFunctionParameters()
+
+	// Parse the return type (assuming it's a single token for now)
+	if !p.expectPeek(token.IDENT) { // Or a more complex type parsing logic
+		return nil
+	}
+	lit.ReturnType = &ast.Identifier{Token: p.curToken, Value: p.curToken.Literal}
 
 	if !p.expectPeek(token.LBRACE) {
 		return nil
